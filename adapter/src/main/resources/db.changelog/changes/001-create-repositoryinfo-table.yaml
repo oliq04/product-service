@@ -1,0 +1,129 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1-create-product-configuration-seq
+      author: your-name
+      changes:
+        - createSequence:
+            sequenceName: product_configuration_seq
+            startValue: 1
+            incrementBy: 1
+
+  - changeSet:
+      id: 2-create-product-configuration
+      author: your-name
+      changes:
+        - createTable:
+            tableName: product_configuration
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueSequenceNext: product_configuration_seq
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+  - changeSet:
+      id: 3-create-comp-com.example.config
+      author: your-name
+      changes:
+        - createTable:
+            tableName: comp_config
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ram
+                  type: VARCHAR(255)
+              - column:
+                  name: processor
+                  type: VARCHAR(255)
+              - column:
+                  name: storage
+                  type: VARCHAR(255)
+        - addForeignKeyConstraint:
+            baseTableName: comp_config
+            baseColumnNames: id
+            referencedTableName: product_configuration
+            referencedColumnNames: id
+            constraintName: fk_comp_config_product_configuration
+
+  - changeSet:
+      id: 4-create-phone-com.example.config
+      author: your-name
+      changes:
+        - createTable:
+            tableName: phone_config
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: battery
+                  type: VARCHAR(255)
+              - column:
+                  name: color
+                  type: VARCHAR(255)
+        - addForeignKeyConstraint:
+            baseTableName: phone_config
+            baseColumnNames: id
+            referencedTableName: product_configuration
+            referencedColumnNames: id
+            constraintName: fk_phone_config_product_configuration
+
+  - changeSet:
+      id: 5-create-product-seq
+      author: your-name
+      changes:
+        - createSequence:
+            sequenceName: product_seq
+            startValue: 1
+            incrementBy: 1
+
+  - changeSet:
+      id: 6-create-product
+      author: your-name
+      changes:
+        - createTable:
+            tableName: product
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueSequenceNext: product_seq
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: price
+                  type: DECIMAL(19,2)
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+              - column:
+                  name: quantity
+                  type: BIGINT
+              - column:
+                  name: product_configuration_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    unique: true
+        - addForeignKeyConstraint:
+            baseTableName: product
+            baseColumnNames: product_configuration_id
+            referencedTableName: product_configuration
+            referencedColumnNames: id
+            constraintName: fk_product_product_configuration
+
