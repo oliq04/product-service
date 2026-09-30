@@ -39,9 +39,11 @@ public class ProductController {
     }
 
     @PostMapping("/to-cart")
-    public ConfiguredProductDto configuredProduct(ProductConfigurationCommand productConfigurationCommand) {
+    public ConfiguredProductDto configuredProduct(@RequestBody ProductConfigurationCommand productConfigurationCommand) {
+        log.info("Retrieved product configuration request {}", productConfigurationCommand);
         ProductConfiguration productConfiguration = productMapper.toProductConfig(productConfigurationCommand);
-        return productService.productConfig(productConfiguration);
+        Product configuredProduct = productService.productConfig(productConfiguration);
+        return productMapper.toConfigured(configuredProduct);
     }
 
 }

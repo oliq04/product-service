@@ -2,11 +2,7 @@ package com.example;
 
 import com.example.entity.ProductEntity;
 import com.example.entity.ProductOptionEntity;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ObjectFactory;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
@@ -28,6 +24,14 @@ public interface ProductMapper {
     ProductOptionEntity toEntity(ProductOption option);
 
     ProductOption toPojo(ProductOptionEntity entity);
+
+    @SubclassMapping(source = Smartphone.class, target = ConfiguredProductDto.class)
+    @SubclassMapping(source = Computer.class, target = ConfiguredProductDto.class)
+    ConfiguredProductDto toConfigured(Product product);
+
+    ConfiguredProductDto toConfigured(Smartphone smartphone);
+
+    ConfiguredProductDto toConfigured(Computer computer);
 
     @ObjectFactory
     default Product createProduct(ProductCommand command) {

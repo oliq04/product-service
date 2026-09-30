@@ -26,7 +26,6 @@ public class ProductService {
         Product product = repositoryProvider.findById(productConfiguration.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
-
         String productType = product.getType();
         switch (productType) {
             case "PHONE": {
