@@ -35,6 +35,13 @@ public class ProductController {
 
     @DeleteMapping
     public void deleteById(Long id) {
-       productService.deleteById(id);
+        productService.deleteById(id);
     }
+
+    @PostMapping("/to-cart")
+    public ConfiguredProductDto configuredProduct(ProductConfigurationCommand productConfigurationCommand) {
+        ProductConfiguration productConfiguration = productMapper.toProductConfig(productConfigurationCommand);
+        return productService.productConfig(productConfiguration);
+    }
+
 }

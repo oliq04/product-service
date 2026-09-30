@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,9 +14,5 @@ public class ProductDto {
     private BigDecimal price;
     private String type;
     private Long quantity;
-    private String ram;
-    private String processor;
-    private String storage;
-    private String battery;
-    private String color;
+    private List<ProductOptionDto> options;
 }

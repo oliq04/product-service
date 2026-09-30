@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -18,7 +19,7 @@ public class ProductEntity {
     private BigDecimal price;
     private String type;
     private Long quantity;
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "product_configuration_id", unique = true)
-    private ProductConfiguration configuration;
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductOptionEntity> options;
 }
