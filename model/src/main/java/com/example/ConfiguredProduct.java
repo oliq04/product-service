@@ -19,4 +19,6 @@ public class ConfiguredProduct {
     private String battery;
     private String color;
     private List<String> accessories;
+    private String ram;
+    private String processor;
 }

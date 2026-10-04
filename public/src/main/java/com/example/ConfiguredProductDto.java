@@ -3,7 +3,6 @@ package com.example;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -19,4 +18,6 @@ public class ConfiguredProductDto {
     private String battery;
     private String color;
     private List<String> accessories;
+    private String processor;
+    private String ram;
 }

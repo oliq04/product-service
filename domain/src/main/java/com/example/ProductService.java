@@ -49,8 +49,18 @@ public class ProductService {
                         product.getType(), product.getQuantity(),battery.getValue(), color.getValue(),accessories);
             }
 
-            case "COMPUTER":
-                return new Computer();
+            case "COMPUTER":{
+                ProductOption ram = product.getOptions().stream()
+                        .filter(productOption -> productOption.getId().equals(productConfiguration.getRamId()))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid RAM id"));
+                ProductOption processor = product.getOptions().stream()
+                        .filter(productOption -> productOption.getId().equals(productConfiguration.getProcessorId()))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid processor id"));
+                return new Computer(product.getId(),product.getName(), product.getPrice(), product.getType(),
+                        product.getQuantity(), ram.getValue(), processor.getValue());
+            }
 
             default:
                 throw new IllegalArgumentException("Illegal type");
