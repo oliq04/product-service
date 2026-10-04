@@ -1,5 +1,8 @@
 package com.example;
 
+import com.example.dto.ConfiguredProductDto;
+import com.example.dto.ProductDto;
+import com.example.dto.ProductOptionDto;
 import com.example.entity.ProductEntity;
 import com.example.entity.ProductOptionEntity;
 import org.mapstruct.*;

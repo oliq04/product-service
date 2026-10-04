@@ -1,4 +1,4 @@
-package com.example;
+package com.example.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class ConfiguredProductDto {
     private Long quantity;
     private String battery;
     private String color;
-    private List<String> accessories;
+    private List<AccessoryDto> accessories;
     private String processor;
     private String ram;
 }

@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.dto.ConfiguredProductDto;
+import com.example.dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

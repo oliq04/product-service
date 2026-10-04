@@ -15,10 +15,10 @@ import java.util.List;
 public class Smartphone extends Product {
     private String battery;
     private String color;
-    private List<String> accessories;
+    private List<Accessory> accessories;
 
     public Smartphone(Long id, String name, BigDecimal price, String type, Long quantity, String battery,
-                      String color, List<String> accessories) {
+                      String color, List<Accessory> accessories) {
         super(id,name,price,type,quantity);
         this.battery = battery;
         this.color = color;

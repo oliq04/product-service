@@ -18,7 +18,7 @@ public class ConfiguredProduct {
     private Long quantity;
     private String battery;
     private String color;
-    private List<String> accessories;
+    private List<Accessory> accessories;
     private String ram;
     private String processor;
 }

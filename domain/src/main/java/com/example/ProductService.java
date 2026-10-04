@@ -40,10 +40,10 @@ public class ProductService {
                         .findFirst()
                         .orElseThrow(() -> new IllegalArgumentException("Wrong color id"));
 
-                List<String> accessories = product.getOptions()
+                List<Accessory> accessories = product.getOptions()
                         .stream()
                         .filter(productOption -> productConfiguration.getAccessoriesList().contains(productOption.getId()))
-                        .map(ProductOption::getValue)
+                        .map(productOption -> new Accessory(productOption.getValue()))
                         .toList();
                 return new Smartphone(product.getId(), product.getName(), product.getPrice(),
                         product.getType(), product.getQuantity(),battery.getValue(), color.getValue(),accessories);
