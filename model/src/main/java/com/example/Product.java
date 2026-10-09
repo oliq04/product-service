@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,19 +11,27 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Product {
+public class Product {
     private Long id;
     private String name;
-    private BigDecimal price;
+    private Price price;
     private String type;
     private Long quantity;
     private List<ProductOption> options = new ArrayList<>();
 
-    public Product(Long id, String name, BigDecimal price, String type, Long quantity) {
+    public Product(Long id, String name, Price price, String type, Long quantity) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.type = type;
         this.quantity = quantity;
+    }
+
+    public Product update(Product product) {
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.quantity = product.getQuantity();
+        this.options = product.getOptions();
+        return this;
     }
 }

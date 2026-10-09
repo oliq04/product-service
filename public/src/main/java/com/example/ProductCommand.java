@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.dto.PriceCommand;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class ProductCommand {
     private Integer id;
     private String name;
-    private BigDecimal price;
+    private PriceCommand price;
     private String type;
     private Long quantity;
     private List<ProductOptionCommand> options;

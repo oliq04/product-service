@@ -3,7 +3,6 @@ package com.example.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -15,7 +14,8 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private BigDecimal price;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private PriceEntity price;
     private String type;
     private Long quantity;
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,

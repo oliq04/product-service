@@ -11,8 +11,7 @@ import lombok.Setter;
 @Setter
 public class ProductOptionEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_option_seq")
-    @SequenceGenerator(name = "product_option_seq", sequenceName = "product_option_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

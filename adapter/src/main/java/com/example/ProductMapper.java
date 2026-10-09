@@ -2,6 +2,7 @@ package com.example;
 
 import com.example.dto.ConfiguredProductDto;
 import com.example.dto.ProductDto;
+import com.example.dto.ProductEditCommand;
 import com.example.dto.ProductOptionDto;
 import com.example.entity.ProductEntity;
 import com.example.entity.ProductOptionEntity;
@@ -28,32 +29,7 @@ public interface ProductMapper {
 
     ProductOption toPojo(ProductOptionEntity entity);
 
-    @SubclassMapping(source = Smartphone.class, target = ConfiguredProductDto.class)
-    @SubclassMapping(source = Computer.class, target = ConfiguredProductDto.class)
-    ConfiguredProductDto toConfigured(Product product);
-
-    ConfiguredProductDto toConfigured(Smartphone smartphone);
-
-    ConfiguredProductDto toConfigured(Computer computer);
-
-    @ObjectFactory
-    default Product createProduct(ProductCommand command) {
-        return createProduct(command.getType());
-    }
-
-    @ObjectFactory
-    default Product createProduct(ProductEntity entity) {
-        return createProduct(entity.getType());
-    }
-
-    default Product createProduct(String type) {
-        return switch (type == null ? "" : type.toUpperCase()) {
-            case "PHONE" -> new Smartphone();
-            case "COMPUTER" -> new Computer();
-            case "ELECTRONICS" -> new Electronics();
-            default -> throw new IllegalArgumentException("Unsupported product type: " + type);
-        };
-    }
+    Product toPojoFromEditCommand(ProductEditCommand productEditCommand);
 
     @AfterMapping
     default void connectOptions(@MappingTarget ProductEntity product) {

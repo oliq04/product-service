@@ -22,50 +22,25 @@ public class ProductService {
         return repositoryProvider.findAll(domainPageable);
     }
 
+    public Product update(Product newProductInfo) {
+        Product product = repositoryProvider.findById(newProductInfo.getId())
+                .orElseThrow((() -> new IllegalArgumentException("Product doesn't exist")));
+        Product updatedProduct = product.update(newProductInfo);
+        return repositoryProvider.save(updatedProduct);
+    }
+
     public Product productConfig(ProductConfiguration productConfiguration) {
         Product product = repositoryProvider.findById(productConfiguration.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
-
-        String productType = product.getType();
-        switch (productType) {
-            case "PHONE": {
-                ProductOption battery = product.getOptions()
-                        .stream()
-                        .filter(productOption -> productOption.getId().equals(productConfiguration.getBatteryId()))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException("Wrong battery id"));
-                ProductOption color = product.getOptions()
-                        .stream()
-                        .filter(productOption -> productOption.getId().equals(productConfiguration.getColorId()))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException("Wrong color id"));
-
-                List<Accessory> accessories = product.getOptions()
-                        .stream()
-                        .filter(productOption -> productConfiguration.getAccessoriesList().contains(productOption.getId()))
-                        .map(productOption -> new Accessory(productOption.getValue()))
-                        .toList();
-                return new Smartphone(product.getId(), product.getName(), product.getPrice(),
-                        product.getType(), product.getQuantity(),battery.getValue(), color.getValue(),accessories);
-            }
-
-            case "COMPUTER":{
-                ProductOption ram = product.getOptions().stream()
-                        .filter(productOption -> productOption.getId().equals(productConfiguration.getRamId()))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException("Invalid RAM id"));
-                ProductOption processor = product.getOptions().stream()
-                        .filter(productOption -> productOption.getId().equals(productConfiguration.getProcessorId()))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException("Invalid processor id"));
-                return new Computer(product.getId(),product.getName(), product.getPrice(), product.getType(),
-                        product.getQuantity(), ram.getValue(), processor.getValue());
-            }
-
-            default:
-                throw new IllegalArgumentException("Illegal type");
-        }
+        Product configuredProduct = new Product(product.getId(), product.getName(), product.getPrice(), product.getType(),
+                product.getQuantity());
+        List<Long> configurationIds = productConfiguration.getProductOptionIds();
+        List<ProductOption> productOptions = product.getOptions().stream()
+                .filter(productOption -> configurationIds.contains(productOption.getId()))
+                .toList();
+        configuredProduct.setOptions(productOptions);
+        return configuredProduct;
     }
-
-
 }
+
+

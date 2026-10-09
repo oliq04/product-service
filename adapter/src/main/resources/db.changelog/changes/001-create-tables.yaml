@@ -1,0 +1,89 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0-create-price-table
+      author: oliq04
+      changes:
+        - createTable:
+            tableName: price
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: tax_included_amount
+                  type: numeric(38,2)
+              - column:
+                  name: net_price
+                  type: numeric(38,2)
+              - column:
+                  name: tax_rate
+                  type: double precision
+
+  - changeSet:
+      id: 1-create-product-table
+      author: oliq04
+      changes:
+        - createTable:
+            tableName: product
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: price_id
+                  type: bigint
+              - column:
+                  name: type
+                  type: varchar(255)
+              - column:
+                  name: quantity
+                  type: bigint
+
+  - changeSet:
+      id: 2-create-product-option-table
+      author: oliq04
+      changes:
+        - createTable:
+            tableName: product_option
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: bigint
+              - column:
+                  name: option_type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: value
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: additional_price
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: available
+                  type: boolean
+                  constraints:
+                    nullable: false

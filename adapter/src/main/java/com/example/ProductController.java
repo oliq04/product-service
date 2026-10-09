@@ -1,11 +1,11 @@
 package com.example;
 
-import com.example.dto.ConfiguredProductDto;
 import com.example.dto.ProductDto;
+import com.example.dto.ProductEditCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -35,17 +35,25 @@ public class ProductController {
         return PageDto.toPageableDto(productDtoList, domainPage.getDomainPageDetails());
     }
 
-    @DeleteMapping
-    public void deleteById(Long id) {
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable("id") Long id) {
         productService.deleteById(id);
     }
 
     @PostMapping("/to-cart")
-    public ConfiguredProductDto configuredProduct(@RequestBody ProductConfigurationCommand productConfigurationCommand) {
+    public ProductDto configuredProduct(@RequestBody ProductConfigurationCommand productConfigurationCommand) {
         log.info("Retrieved product configuration request {}", productConfigurationCommand);
         ProductConfiguration productConfiguration = productMapper.toProductConfig(productConfigurationCommand);
         Product configuredProduct = productService.productConfig(productConfiguration);
-        return productMapper.toConfigured(configuredProduct);
+        return productMapper.toDto(configuredProduct);
+    }
+
+    @PatchMapping
+    public ProductDto updateProductInfo(@RequestBody ProductEditCommand productEditCommand) {
+        Product editCommand = productMapper.toPojoFromEditCommand(productEditCommand);
+        Product updatedProduct = productService.update(editCommand);
+        return productMapper.toDto(updatedProduct);
     }
 
 }

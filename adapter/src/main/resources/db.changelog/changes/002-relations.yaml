@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-relations-between-tables
+      author: oliq04
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: price_id
+            baseTableName: product
+            constraintName: fk_product_price
+            referencedColumnNames: id
+            referencedTableName: price
+
+        - addUniqueConstraint:
+            tableName: product
+            columnNames: price_id
+            constraintName: uk_product_price
+
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: product_option
+            constraintName: fk_product_option_product
+            referencedColumnNames: id
+            referencedTableName: product
+            onDelete: CASCADE

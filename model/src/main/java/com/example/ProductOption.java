@@ -11,8 +11,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductOption {
     private Long id;
+    private Long productId;
     private String optionType;
     private String value;
     private BigDecimal additionalPrice;
+    private String name;
     private boolean available;
 }

@@ -11,7 +11,7 @@ import java.util.List;
 public class ProductDto {
     private Long id;
     private String name;
-    private BigDecimal price;
+    private PriceDto price;
     private String type;
     private Long quantity;
     private List<ProductOptionDto> options;

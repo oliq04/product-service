@@ -4,18 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class ProductConfiguration {
     private Long productId;
-    private Long processorId;
-    private Long ramId;
-    private Long batteryId;
-    private Long colorId;
-    private List<Long> accessoriesList;
+    private List<Long> productOptionIds;
 }

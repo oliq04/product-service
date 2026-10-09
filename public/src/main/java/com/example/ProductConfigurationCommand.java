@@ -13,9 +13,5 @@ import java.util.List;
 @ToString
 public class ProductConfigurationCommand {
     private Long productId;
-    private Long processorId;
-    private Long ramId;
-    private Long batteryId;
-    private Long colorId;
-    private List<Long> accessoriesList;
+    private List<Long> productOptionIds;
 }
