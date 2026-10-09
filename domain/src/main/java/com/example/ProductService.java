@@ -3,6 +3,7 @@ package com.example;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class ProductService {
@@ -10,6 +11,15 @@ public class ProductService {
     public final RepositoryProvider repositoryProvider;
 
     public Product add(Product product) {
+
+        List<ProductOption> optionFromExistingProduct = product.getOptions().stream()
+                .filter(Objects::nonNull)
+                .map(ProductOption::getProductId)
+                .map(id -> repositoryProvider.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("Product not with id:" + id + "not found")))
+                .map(ProductOption::toProductOption)
+                .toList();
+        product.setOptions(optionFromExistingProduct);
         return repositoryProvider.save(product);
     }
 

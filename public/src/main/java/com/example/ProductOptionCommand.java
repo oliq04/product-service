@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class ProductOptionCommand {
+    private Long productId;
     private String optionType;
     private String value;
     private BigDecimal additionalPrice;

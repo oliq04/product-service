@@ -34,4 +34,5 @@ public class Product {
         this.options = product.getOptions();
         return this;
     }
+
 }

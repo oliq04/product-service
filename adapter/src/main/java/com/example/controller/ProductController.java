@@ -1,7 +1,10 @@
-package com.example;
+package com.example.controller;
 
+import com.example.*;
+import com.example.dto.PageDto;
 import com.example.dto.ProductDto;
 import com.example.dto.ProductEditCommand;
+import com.example.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -55,5 +58,4 @@ public class ProductController {
         Product updatedProduct = productService.update(editCommand);
         return productMapper.toDto(updatedProduct);
     }
-
 }

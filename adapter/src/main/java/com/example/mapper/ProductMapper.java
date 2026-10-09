@@ -1,6 +1,6 @@
-package com.example;
+package com.example.mapper;
 
-import com.example.dto.ConfiguredProductDto;
+import com.example.*;
 import com.example.dto.ProductDto;
 import com.example.dto.ProductEditCommand;
 import com.example.dto.ProductOptionDto;
@@ -24,19 +24,15 @@ public interface ProductMapper {
 
     ProductOptionDto toDto(ProductOption option);
 
-    @Mapping(target = "product", ignore = true)
+    @Mapping(target = "optionProduct", ignore = true)
     ProductOptionEntity toEntity(ProductOption option);
 
+    @Mapping(target = "productId", source = "optionProduct.id")
+    @Mapping(target = "name", source = "optionProduct.name")
     ProductOption toPojo(ProductOptionEntity entity);
 
     Product toPojoFromEditCommand(ProductEditCommand productEditCommand);
 
-    @AfterMapping
-    default void connectOptions(@MappingTarget ProductEntity product) {
-        if (product.getOptions() != null) {
-            product.getOptions().forEach(option -> option.setProduct(product));
-        }
-    }
-
     ProductConfiguration toProductConfig(ProductConfigurationCommand productConfigurationCommand);
+
 }

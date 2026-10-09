@@ -2,6 +2,7 @@ package com.example.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class ProductOptionEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private ProductEntity product;
+    private ProductEntity optionProduct;
 
     @Column(nullable = false)
     private String optionType;

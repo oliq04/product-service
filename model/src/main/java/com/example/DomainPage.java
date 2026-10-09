@@ -1,7 +1,6 @@
 package com.example;
 
 import lombok.*;
-
 import java.util.List;
 
 @Getter

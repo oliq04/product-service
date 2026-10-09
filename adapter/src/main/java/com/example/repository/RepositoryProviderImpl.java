@@ -1,6 +1,8 @@
-package com.example;
+package com.example.repository;
 
+import com.example.*;
 import com.example.entity.ProductEntity;
+import com.example.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Page;
@@ -19,8 +21,26 @@ public class RepositoryProviderImpl implements RepositoryProvider {
     @Override
     public Product save(Product product) {
         ProductEntity productEntity = productMapper.toEntity(product);
+        connectOptionProducts(product, productEntity);
         ProductEntity savedEntity = productRepository.save(productEntity);
         return productMapper.toPojoFromEntity(savedEntity);
+    }
+
+    private void connectOptionProducts(Product product, ProductEntity productEntity) {
+        if (productEntity.getOptions() == null || product.getOptions() == null) {
+            return;
+        }
+
+        for (int index = 0; index < productEntity.getOptions().size(); index++) {
+            var optionEntity = productEntity.getOptions().get(index);
+            var option = product.getOptions().get(index);
+
+            if (option.getProductId() != null) {
+                optionEntity.setOptionProduct(
+                        productRepository.getReferenceById(option.getProductId())
+                );
+            }
+        }
     }
 
     @Override

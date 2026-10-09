@@ -14,11 +14,21 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private PriceEntity price;
     private String type;
     private Long quantity;
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+    )
+    @JoinTable(
+            name = "product_product_option",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_option_id")
+    )
     private List<ProductOptionEntity> options;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private PriceEntity price;
+
 }

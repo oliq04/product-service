@@ -1,5 +1,6 @@
-package com.example;
+package com.example.dto;
 
+import com.example.DomainPageDetails;
 import lombok.*;
 import java.util.List;
 

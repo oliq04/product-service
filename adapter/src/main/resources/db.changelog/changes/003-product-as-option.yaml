@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-product-as-option
+      author: oliq04
+      changes:
+        - addColumn:
+            tableName: product_option
+            columns:
+              - column:
+                  name: option_product_id
+                  type: bigint
+
+        - addForeignKeyConstraint:
+            baseColumnNames: option_product_id
+            baseTableName: product_option
+            constraintName: fk_product_option_option_product
+            referencedColumnNames: id
+            referencedTableName: product
+            onDelete: RESTRICT
