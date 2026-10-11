@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,8 +24,9 @@ public class ProductController {
     @PostMapping
     public ProductDto addProduct(@RequestBody ProductCommand productCommand) {
         log.info("Retrieved add product request: {}", productCommand);
+        List<Long> existingProducts = productCommand.getExistingProductsId();
         Product newProduct = productMapper.toPojo(productCommand);
-        Product savedProduct = productService.add(newProduct);
+        Product savedProduct = productService.add(newProduct, existingProducts);
         return productMapper.toDto(savedProduct);
     }
 

@@ -3,8 +3,6 @@ package com.example;
 import com.example.dto.PriceCommand;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -15,5 +13,6 @@ public class ProductCommand {
     private PriceCommand price;
     private String type;
     private Long quantity;
+    private List<Long> existingProductsId;
     private List<ProductOptionCommand> options;
 }

@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 public class ProductOptionDto {
     private Long id;
     private Long productId;
-    private String name;
     private String optionType;
     private String value;
     private BigDecimal additionalPrice;

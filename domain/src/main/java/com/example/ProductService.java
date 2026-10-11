@@ -9,17 +9,18 @@ import java.util.Objects;
 public class ProductService {
 
     public final RepositoryProvider repositoryProvider;
+    public final ProductOptionRepositoryProvider productOptionRepositoryProvider;
 
-    public Product add(Product product) {
-
-        List<ProductOption> optionFromExistingProduct = product.getOptions().stream()
-                .filter(Objects::nonNull)
-                .map(ProductOption::getProductId)
-                .map(id -> repositoryProvider.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("Product not with id:" + id + "not found")))
-                .map(ProductOption::toProductOption)
-                .toList();
-        product.setOptions(optionFromExistingProduct);
+    public Product add(Product product, List<Long> existingProducts) {
+        if (existingProducts != null) {
+            List<ProductOption> optionFromExistingProduct = existingProducts.stream()
+                    .filter(Objects::nonNull)
+                    .map(id -> repositoryProvider.findById(id)
+                            .orElseThrow(() -> new IllegalArgumentException("Product not with id: " + id + " not found")))
+                    .map(ProductOption::toProductOption)
+                    .toList();
+            product.getOptions().addAll(optionFromExistingProduct);
+        }
         return repositoryProvider.save(product);
     }
 
@@ -36,7 +37,15 @@ public class ProductService {
         Product product = repositoryProvider.findById(newProductInfo.getId())
                 .orElseThrow((() -> new IllegalArgumentException("Product doesn't exist")));
         Product updatedProduct = product.update(newProductInfo);
-        return repositoryProvider.save(updatedProduct);
+        Product savedProduct = repositoryProvider.save(updatedProduct);
+
+        // A product can be used by many configurations, so every denormalized
+        // product option pointing to it has to be refreshed after the product update.
+        productOptionRepositoryProvider.findByProductId(product.getId()).stream()
+                .map(productOption -> productOption.updateFromProduct(savedProduct))
+                .forEach(productOptionRepositoryProvider::save);
+
+        return savedProduct;
     }
 
     public Product productConfig(ProductConfiguration productConfiguration) {

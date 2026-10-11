@@ -24,4 +24,20 @@ public class ProductOption {
         return new ProductOption(null, product.getId(), product.getType(), product.getName(),
                 product.getPrice().getTaxIncludedAmount(), product.getName(), true);
     }
+
+    public ProductOption update(ProductOption productOptionCommand) {
+        this.optionType = productOptionCommand.getOptionType();
+        this.value = productOptionCommand.getValue();
+        this.additionalPrice = productOptionCommand.getAdditionalPrice();
+        this.name = productOptionCommand.getName();
+        return this;
+    }
+
+    public ProductOption updateFromProduct(Product updatedProduct) {
+        this.optionType = updatedProduct.getType();
+        this.value = updatedProduct.getName();
+        this.additionalPrice = updatedProduct.getPrice().getTaxIncludedAmount();
+        this.name = updatedProduct.getName();
+        return this;
+    }
 }

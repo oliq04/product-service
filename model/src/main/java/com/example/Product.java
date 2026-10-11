@@ -31,7 +31,9 @@ public class Product {
         this.name = product.getName();
         this.price = product.getPrice();
         this.quantity = product.getQuantity();
-        this.options = product.getOptions();
+        if (product.getOptions() != null) {
+            this.options = product.getOptions();
+        }
         return this;
     }
 

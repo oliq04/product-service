@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-product-option-many-to-many
+      author: oliq04
+      changes:
+        - createTable:
+            tableName: product_product_option
+            columns:
+              - column:
+                  name: product_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_product_product_option
+              - column:
+                  name: product_option_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: product_product_option
+            constraintName: fk_product_product_option_product
+            referencedColumnNames: id
+            referencedTableName: product
+
+        - addForeignKeyConstraint:
+            baseColumnNames: product_option_id
+            baseTableName: product_product_option
+            constraintName: fk_product_product_option_option
+            referencedColumnNames: id
+            referencedTableName: product_option
+
+        - dropForeignKeyConstraint:
+            baseTableName: product_option
+            constraintName: fk_product_option_option_product
+
+        - dropColumn:
+            tableName: product_option
+            columnName: option_product_id
