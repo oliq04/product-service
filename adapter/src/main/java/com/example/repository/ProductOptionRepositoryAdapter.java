@@ -43,10 +43,7 @@ public class ProductOptionRepositoryAdapter implements ProductOptionRepositoryPr
                 : productOptionRepository.findById(productOption.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product option"));
 
-        productEntity.setOptionType(productOption.getOptionType());
-        productEntity.setValue(productOption.getValue());
-        productEntity.setAdditionalPrice(productOption.getAdditionalPrice());
-        productEntity.setAvailable(productOption.isAvailable());
+        productOptionMapper.updateEntity(productOption, productEntity);
 
         if (productEntity.getOptionProduct() == null && productOption.getProductId() != null) {
             productEntity.setOptionProduct(productRepository.getReferenceById(productOption.getProductId()));
