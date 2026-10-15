@@ -2,8 +2,7 @@ package com.example;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class ProductService {
@@ -12,15 +11,7 @@ public class ProductService {
     public final ProductOptionRepositoryProvider productOptionRepositoryProvider;
 
     public Product add(Product product, List<Long> existingProducts) {
-        if (existingProducts != null) {
-            List<ProductOption> optionFromExistingProduct = existingProducts.stream()
-                    .filter(Objects::nonNull)
-                    .map(id -> repositoryProvider.findById(id)
-                            .orElseThrow(() -> new IllegalArgumentException("Product not with id: " + id + " not found")))
-                    .map(ProductOption::toProductOption)
-                    .toList();
-            product.getOptions().addAll(optionFromExistingProduct);
-        }
+        addExistingProducts(product, existingProducts);
         return repositoryProvider.save(product);
     }
 
@@ -33,19 +24,30 @@ public class ProductService {
         return repositoryProvider.findAll(domainPageable);
     }
 
-    public Product update(Product newProductInfo) {
+    public Product update(Product newProductInfo, List<Long> existingProducts) {
+        addExistingProducts(newProductInfo, existingProducts);
         Product product = repositoryProvider.findById(newProductInfo.getId())
                 .orElseThrow((() -> new IllegalArgumentException("Product doesn't exist")));
         Product updatedProduct = product.update(newProductInfo);
         Product savedProduct = repositoryProvider.save(updatedProduct);
 
-        // A product can be used by many configurations, so every denormalized
-        // product option pointing to it has to be refreshed after the product update.
         productOptionRepositoryProvider.findByProductId(product.getId()).stream()
                 .map(productOption -> productOption.updateFromProduct(savedProduct))
                 .forEach(productOptionRepositoryProvider::save);
 
         return savedProduct;
+    }
+
+    private void addExistingProducts(Product product, List<Long> existingProducts) {
+        if (existingProducts != null) {
+            List<ProductOption> optionFromExistingProduct = existingProducts.stream()
+                    .filter(Objects::nonNull)
+                    .map(id -> repositoryProvider.findById(id)
+                            .orElseThrow(() -> new IllegalArgumentException("Product not with id: " + id + " not found")))
+                    .map(ProductOption::toProductOption)
+                    .toList();
+            product.getOptions().addAll(optionFromExistingProduct);
+        }
     }
 
     public Product productConfig(ProductConfiguration productConfiguration) {
@@ -59,6 +61,16 @@ public class ProductService {
                 .toList();
         configuredProduct.setOptions(productOptions);
         return configuredProduct;
+    }
+
+    public List<Product> getConfiguredList(Map<Long, List<Long>> productsWithConfigs) {
+        Set<Long> keySet = productsWithConfigs.keySet();
+        List<Product> productList = new ArrayList<>();
+        for (Long id : keySet) {
+            ProductConfiguration productConfiguration = new ProductConfiguration(id, productsWithConfigs.get(id));
+            productList.add(productConfig(productConfiguration));
+        }
+        return productList;
     }
 }
 

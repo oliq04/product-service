@@ -15,5 +15,6 @@ public class ProductEditCommand {
     private PriceCommand price;
     private String type;
     private Long quantity;
+    private List<Long> existingProductsId;
     private List<ProductOptionCommand> options;
 }

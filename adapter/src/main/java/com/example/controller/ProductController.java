@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -56,8 +57,16 @@ public class ProductController {
 
     @PatchMapping
     public ProductDto updateProductInfo(@RequestBody ProductEditCommand productEditCommand) {
+        List<Long> existingProducts = productEditCommand.getExistingProductsId();
         Product editCommand = productMapper.toPojoFromEditCommand(productEditCommand);
-        Product updatedProduct = productService.update(editCommand);
+        Product updatedProduct = productService.update(editCommand, existingProducts);
         return productMapper.toDto(updatedProduct);
+    }
+
+    @PostMapping("/configured")
+    public List<ProductDto> getConfiguredProducts(@RequestBody Map<Long, List<Long>> productsWithConfigs) {
+        List<Product> productList = productService.getConfiguredList(productsWithConfigs);
+        return productList.stream().map(productMapper::toDto)
+                .toList();
     }
 }
